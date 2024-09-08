@@ -1,0 +1,38 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+main {
+    flex: 1;
+}
+
+
+.uniform-card {
+    width: 300px;
+}
+
+
+
+.show-on-hover {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.uniform-card:hover .show-on-hover {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+
+/* .custom-container {
+    padding: 1rem; /* Adjust padding */
+    max-width: 400px; /* Set a max-width */
+    margin: auto; /* Center the container */
+}
+ */
