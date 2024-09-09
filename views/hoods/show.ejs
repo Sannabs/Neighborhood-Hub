@@ -63,7 +63,18 @@
 
         <!-- Placeholder for Future Review Section -->
         <div class="w-full">
+            <% let hasReviewed = false; %>
             <% if (currentUser) { %>
+                <% for (let review of neighborhood.reviews) { %>
+                   <%  if(review.author._id.toString() === currentUser._id.toString()) { %>
+                    <% hasReviewed = true; %>
+                    <% break; %>
+                    <% } %>
+                <% } %>
+                <% } %>
+
+
+                <% if(currentUser && !hasReviewed) {%>
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3">Leave a Review</h2>
                 <div class="bg-white p-4 rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-200">
                     <form action="/neighborhoods/<%= neighborhood._id %>/reviews" method="POST">
@@ -96,12 +107,13 @@
                                     <img class="w-10 h-10 me-4 rounded-full"
                                         src="https://cdn.vectorstock.com/i/1000v/23/81/default-avatar-profile-icon-vector-18942381.jpg"
                                         alt="">
-                                    <div class="font-medium dark:text-white">
-                                        <p>SannaBS <time datetime="2014-08-16 19:00"
-                                                class="block text-sm text-gray-500 dark:text-gray-400">Joined on August
-                                                2014</time></p>
+                                        <div class=" ml-0 font-medium dark:text-white">
+                                            <p><%= review.author.username %>
+                                                <time class="review-date block text-sm text-gray-500 dark:text-gray-400" 
+                                                      data-date="<%= review.createdAt.toISOString() %>"></time>
+                                            </p>
+                                        </div>                                        
                                     </div>
-                                </div>
                                 <article>
                                     <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
                                         <div class="star-rating-display">
@@ -176,10 +188,4 @@
 
         </div>
 
-
-
-
-
-
-
-        <!-- // FOR THE REVIEW DISPLAY
+    </div>

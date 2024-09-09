@@ -19,7 +19,6 @@ const passport = require('passport');
 const session = require('express-session');
 // for temporary error messages and  success messages
 const flash = require('connect-flash');
-
 const app = express()
 
 mongoose.connect('mongodb://127.0.0.1:27017/Neigbor')
@@ -167,7 +166,6 @@ app.put('/neighborhoods/:id/reviews/:reviewId', isLoggedIn, isReviewAuthor, vali
         { rating, body },
         { new: true }
     );
-
     res.redirect(`/neighborhoods/${id}`);
 }));
 
