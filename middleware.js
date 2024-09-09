@@ -1,5 +1,5 @@
 const { HoodSchema, reviewSchema } = require('./Schema.js')
-const ExpressError = require('./utils/ExpressError');
+const ExpressError = require('./utils/ExpressError.js');
 const Neighborhood = require('./models/Neighborhood')
 const Review = require('./models/Review')
 
@@ -52,7 +52,7 @@ module.exports.validateNeighborhood = (req, res, next) => {
 
 
 module.exports.isLoggedIn = (req, res, next) => {
-    if(!req.isAuthenticated()){
+    if (!req.isAuthenticated()) {
         req.session.returnTo = req.originalUrl
         req.flash('error', 'you must be signed in first!')
         return res.redirect('/login')

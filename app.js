@@ -1,7 +1,7 @@
 // export during refactoring
 const ExpressError = require('./utils/ExpressError');
 const catchAsync = require('./utils/catchAsync');
-const { validateNeighborhood, validateReview, storeReturnTo} = require('./middleware');
+const { validateNeighborhood, validateReview, storeReturnTo, isLoggedIn, isAuthor, isReviewAuthor } = require('./middleware');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -68,11 +68,13 @@ passport.deserializeUser(User.deserializeUser());
 
 // flash message middleware
 app.use((req, res, next) => {
+    res.locals.currentUser = req.user 
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 });
 
+app.use(storeReturnTo)  //REMOVE ME
 
 app.get('/', (req, res) => {
     res.send("HOME PAGE!")
@@ -89,12 +91,13 @@ app.get('/neighborhoods', catchAsync(async (req, res) => {
 }))
 
 // ADD NEW
-app.get('/neighborhoods/new', (req, res) => {
+app.get('/neighborhoods/new', isLoggedIn, (req, res) => {
     res.render('hoods/new')
 })
 
-app.post('/neighborhoods', validateNeighborhood, catchAsync(async (req, res) => {
+app.post('/neighborhoods', isLoggedIn, validateNeighborhood, catchAsync(async (req, res) => {
     const neighborhood = new Neighborhood(req.body.neighborhood)
+    neighborhood.author = req.user._id;
     await neighborhood.save();
     req.flash('success', 'Successfully made a new campground!')
     res.redirect(`/neighborhoods/${neighborhood._id}`)
@@ -103,25 +106,36 @@ app.post('/neighborhoods', validateNeighborhood, catchAsync(async (req, res) => 
 // SHOW PAGE
 app.get('/neighborhoods/:id', catchAsync(async (req, res) => {
     const { id } = req.params
-    const neighborhood = await Neighborhood.findById(id).populate({ path: 'reviews' })
+    const neighborhood = await Neighborhood.findById(id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('author')
     res.render('hoods/show', { neighborhood })
 }))
 
 // UPDATING
-app.get('/neighborhoods/:id/edit', catchAsync(async (req, res) => {
+app.get('/neighborhoods/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params
     const neighborhood = await Neighborhood.findById(id)
+    if (!neighborhood) {
+        req.flash('error', 'Cannot find that neighborhood!')
+        return res.redirect('/neighborhoods')
+    }
     res.render('hoods/edit', { neighborhood })
 }))
 
-app.put('/neighborhoods/:id', validateNeighborhood, catchAsync(async (req, res) => {
+app.put('/neighborhoods/:id', isLoggedIn, isAuthor, validateNeighborhood, catchAsync(async (req, res) => {
     const { id } = req.params
     const neighborhood = await Neighborhood.findByIdAndUpdate(id, { ...req.body.neighborhood }, { new: true })
+    await neighborhood.save()
+    req.flash('success', 'Successfully Updated the neighborhood!')
     res.redirect(`/neighborhoods/${neighborhood._id}`)
 }))
 
 // DELETING SOMETHING
-app.delete('/neighborhoods/:id', catchAsync(async (req, res) => {
+app.delete('/neighborhoods/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
     const { id } = req.params
     const neighborhood = await Neighborhood.findByIdAndDelete(id)
     res.redirect(`/neighborhoods`)
@@ -131,16 +145,18 @@ app.delete('/neighborhoods/:id', catchAsync(async (req, res) => {
 
 //REVIEW CRUD
 // creating review
-app.post('/neighborhoods/:id/reviews', validateReview, catchAsync(async (req, res) => {
+app.post('/neighborhoods/:id/reviews', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const { id } = req.params;
     const neighborhood = await Neighborhood.findById(id)
     const review = new Review(req.body.review)
+    review.author = req.user._id;
     neighborhood.reviews.push(review)
     await review.save()
     neighborhood.save();
+    req.flash('success', 'Review Added!')
     res.redirect(`/neighborhoods/${neighborhood._id}`)
 }))
-app.put('/neighborhoods/:id/reviews/:reviewId', validateReview, catchAsync(async (req, res) => {
+app.put('/neighborhoods/:id/reviews/:reviewId', isLoggedIn, isReviewAuthor, validateReview, catchAsync(async (req, res) => {
     console.log(req.body)
     const { id, reviewId } = req.params;
     const { rating, body } = req.body.review;  // Use req.body.review to match the form structure
@@ -156,7 +172,7 @@ app.put('/neighborhoods/:id/reviews/:reviewId', validateReview, catchAsync(async
 }));
 
 
-app.delete('/neighborhoods/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+app.delete('/neighborhoods/:id/reviews/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async (req, res) => {
     const { id, reviewId } = req.params
     await Neighborhood.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
     await Review.findByIdAndDelete(reviewId)
@@ -172,7 +188,7 @@ app.get('/register', (req, res) => {
 app.post('/register', catchAsync(async (req, res) => {
     try {
         const { email, username, password } = req.body;
-        const user = await new User({email, username})
+        const user = await new User({ email, username })
         const registeredUser = await User.register(user, password)
         req.login(registeredUser, err => {
             if (err) return next(err);
@@ -206,7 +222,7 @@ app.post('/login', storeReturnTo, passport.authenticate('local', {
 // LOGOUT
 app.get('/logout', (req, res, next) => {
     req.logout(function (err) {
-        if(err) {
+        if (err) {
             return next(err);
         }
         req.flash('success', 'Goodbye!')

@@ -44,12 +44,11 @@ const HoodSchema = new Schema({
             ref: 'Review'
         }
     ],
-    author: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    ]
+    author:
+    {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 
 });
 

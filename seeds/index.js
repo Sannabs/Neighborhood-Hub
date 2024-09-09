@@ -22,6 +22,7 @@ const seedDB = async () => {
         const hood = new Neighborhood({
             title: `${sample(descriptors)}, ${sample(places)}`,
             name: `Neighborhood ${i + 1}`,  // Example name, you can adjust this
+            author: '66dd03b1a39c99761ffb1960',
             location: hoods[rand10].location,
             price,
             description: "Nestled between lush greenery and vibrant local markets, this neighborhood offers a perfect blend of urban convenience and suburban tranquility. Its tree-lined streets are home to charming cafes and a tight-knit community spirit.",

@@ -10,10 +10,9 @@ function showEditForm(reviewId, body, rating) {
     const textarea = form.querySelector('textarea[name="review[body]"]');
     textarea.value = body;
 
+    // Pre-fill the rating radio buttons
     const ratingInputs = form.querySelectorAll('input[name="review[rating]"]');
     ratingInputs.forEach(input => {
-        if (input.value == rating) {
-            input.checked = true;
-        }
+        input.checked = input.value == rating;  // Ensure the right rating is checked
     });
 }
