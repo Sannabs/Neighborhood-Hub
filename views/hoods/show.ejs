@@ -1,191 +1,167 @@
 <%- layout('layouts/boiler') %>
-    <link rel="stylesheet" href="/Gstyles/stars.css">
+<link rel="stylesheet" href="/Gstyles/stars.css">
 
-
-    <div class="majorContainer flex flex-wrap p-4">
-        <!-- Main Content Area -->
-        <div class="flex flex-col md:flex-row w-full mb-6">
-            <!-- Image Section -->
-            <div class="w-full md:w-1/2 md:mb-0">
-                <img class="w-full h-auto rounded-lg shadow-lg object-cover"
-                    src="https://media.istockphoto.com/id/593339720/photo/cleveland-houses-residential-area.jpg?s=612x612&w=0&k=20&c=ZYYAQQ8PETtGzj1q2pYycMnrGQn69Bm5P7AP9sZ9mDk="
-                    alt="Neighborhood Image">
-            </div>
-
-            <!-- Neighborhood Info Section -->
-            <div class="w-full md:w-1/2 p-4 bg-white ">
-                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Neighborhood Information</h2>
-                <p class="mb-2 text-gray-700 dark:text-gray-400">
-                    <i class="fas fa-info-circle mr-2 text-blue-500"></i>
-                    <%= neighborhood.description %>
-                </p>
-                <p class="mb-2 text-gray-700 dark:text-gray-400">
-                    <i class="fas fa-users mr-2 text-green-500"></i>
-                    <%= neighborhood.population %>
-                </p>
-                <p class="mb-2 text-gray-700 dark:text-gray-400">
-                    <i class="fas fa-bus mr-2 text-yellow-500"></i>
-                    <%= neighborhood.transport %>
-                </p>
-                <p class="mb-2 text-gray-700 dark:text-gray-400">
-                    <i class="fas fa-store mr-2 text-purple-500"></i>
-                    <%= neighborhood.businesses %>
-                </p>
-
-                <!-- Action Buttons -->
-                <% if(currentUser && neighborhood.author.equals(currentUser._id)) {%>
-                    <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-4">
-                        <a class="flex items-center text-blue-500 hover:text-blue-700 font-medium"
-                            href="/neighborhoods/<%=neighborhood._id%>/edit">
-                            <i class="fas fa-edit mr-2"></i> Update
-                        </a>
-                        <form class="flex items-center" action="/neighborhoods/<%=neighborhood._id%>?_method=DELETE"
-                            method="POST"
-                            onsubmit="return confirm('Are you sure you want to delete this neighborhood?');">
-                            <button
-                                class="flex items-center text-red-500 hover:text-red-700 font-medium border-none bg-transparent"
-                                type="submit">
-                                <i class="fas fa-trash-alt mr-2"></i> Delete
-                            </button>
-                        </form>
-                    </div>
-                    <% } %>
-            </div>
+<div class="majorContainer flex flex-wrap p-4">
+    <!-- Main Content Area -->
+    <div class="flex flex-col md:flex-row w-full mb-6">
+        <!-- Image Section -->
+        <div class="w-full md:w-1/2 md:mb-0">
+            <img class="w-full h-auto rounded-lg shadow-lg object-cover"
+                src="https://media.istockphoto.com/id/593339720/photo/cleveland-houses-residential-area.jpg?s=612x612&w=0&k=20&c=ZYYAQQ8PETtGzj1q2pYycMnrGQn69Bm5P7AP9sZ9mDk="
+                alt="Neighborhood Image">
         </div>
 
-        <!-- Placeholder for Future Map Section -->
-        <div class="w-full mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Map of the Neighborhood</h2>
-            <div class="h-64 bg-gray-200 rounded-lg dark:bg-gray-700">
-                <!-- Map will be embedded here -->
-            </div>
-        </div>
+        <!-- Neighborhood Info Section -->
+        <div class="w-full md:w-1/2 p-4 bg-white">
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">Neighborhood Information</h2>
+            <p class="mb-2 text-gray-700 dark:text-gray-400">
+                <i class="fas fa-info-circle mr-2 text-blue-500"></i>
+                <%= neighborhood.description %>
+            </p>
+            <p class="mb-2 text-gray-700 dark:text-gray-400">
+                <i class="fas fa-users mr-2 text-green-500"></i>
+                <%= neighborhood.population %>
+            </p>
+            <p class="mb-2 text-gray-700 dark:text-gray-400">
+                <i class="fas fa-bus mr-2 text-yellow-500"></i>
+                <%= neighborhood.transport %>
+            </p>
+            <p class="mb-2 text-gray-700 dark:text-gray-400">
+                <i class="fas fa-store mr-2 text-purple-500"></i>
+                <%= neighborhood.businesses %>
+            </p>
 
-        <!-- Placeholder for Future Review Section -->
-        <div class="w-full">
-            <% let hasReviewed = false; %>
-            <% if (currentUser) { %>
-                <% for (let review of neighborhood.reviews) { %>
-                   <%  if(review.author._id.toString() === currentUser._id.toString()) { %>
+            <!-- Action Buttons -->
+            <% if (currentUser && neighborhood.author.equals(currentUser._id)) { %>
+            <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4 mt-4">
+                <a class="flex items-center text-blue-500 hover:text-blue-700 font-medium"
+                    href="/neighborhoods/<%= neighborhood._id %>/edit">
+                    <i class="fas fa-edit mr-2"></i> Update
+                </a>
+                <form class="flex items-center" action="/neighborhoods/<%= neighborhood._id %>?_method=DELETE" method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this neighborhood?');">
+                    <button class="flex items-center text-red-500 hover:text-red-700 font-medium border-none bg-transparent"
+                        type="submit">
+                        <i class="fas fa-trash-alt mr-2"></i> Delete
+                    </button>
+                </form>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Placeholder for Future Map Section -->
+    <div class="w-full mb-6">
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Map of the Neighborhood</h2>
+        <div class="h-64 bg-gray-200 rounded-lg dark:bg-gray-700">
+            <!-- Map will be embedded here -->
+        </div>
+    </div>
+
+    <!-- Placeholder for Future Review Section -->
+    <div class="w-full ml-5">
+        <% let hasReviewed = false; %>
+        <% if (currentUser) { %>
+            <% for (let review of neighborhood.reviews) { %>
+                <% if (review.author._id.toString() === currentUser._id.toString()) { %>
                     <% hasReviewed = true; %>
                     <% break; %>
-                    <% } %>
                 <% } %>
-                <% } %>
+            <% } %>
+        <% } %>
 
-
-                <% if(currentUser && !hasReviewed) {%>
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3">Leave a Review</h2>
-                <div class="bg-white p-4 rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-200">
-                    <form action="/neighborhoods/<%= neighborhood._id %>/reviews" method="POST">
-                        <div class="mb-3">
-                            <p class="text-xl font-semibold text-black mb-2">Rating</p>
-                            <div class="star-rating flex">
-                                <input type="hidden" name="review[rating]" id="rating-value" value="1">
-                                <i class="fa fa-star" data-value="1"></i>
-                                <i class="fa fa-star" data-value="2"></i>
-                                <i class="fa fa-star" data-value="3"></i>
-                                <i class="fa fa-star" data-value="4"></i>
-                                <i class="fa fa-star" data-value="5"></i>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="body"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Review</label>
-                            <textarea id="body" rows="3"
-                                class="block p-2.5 w-50 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                placeholder="Write your thoughts here..." name="review[body]" required></textarea>
-                            <button type="submit" class="text-sm font-medium text-green-400"><i
-                                    class="fas fa-paper-plane mr-2"></i>Add review</button>
-                        </div>
-                    </form>
-                    <% } %>
-
-                        <% for (let review of neighborhood.reviews) { %>
-                            <div class="mb-3">
-                                <div class="flex items-center mb-4">
-                                    <img class="w-10 h-10 me-4 rounded-full"
-                                        src="https://cdn.vectorstock.com/i/1000v/23/81/default-avatar-profile-icon-vector-18942381.jpg"
-                                        alt="">
-                                        <div class=" ml-0 font-medium dark:text-white">
-                                            <p><%= review.author.username %>
-                                                <time class="review-date block text-sm text-gray-500 dark:text-gray-400" 
-                                                      data-date="<%= review.createdAt.toISOString() %>"></time>
-                                            </p>
-                                        </div>                                        
-                                    </div>
-                                <article>
-                                    <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-                                        <div class="star-rating-display">
-                                            <% for (let i=1; i <=5; i++) { %>
-                                                <i class="fa fa-star <%= review.rating >= i ? 'checked' : '' %>"></i>
-                                                <% } %>
-                                        </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400 ml-2">Rated: <%=
-                                                review.rating %>
-                                        </p>
-                                    </div>
-                                    <p class="mb-2 text-black-400 dark:text-gray-400">
-                                        <%= review.body %>
-                                    </p>
-                                    <% if (currentUser && review.author.equals(currentUser._id)) { %>
-                                        <aside>
-                                            <div class="flex items-center mt-3">
-                                                <a href="#"
-                                                    class="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</a>
-                                                <form
-                                                    action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=DELETE"
-                                                    method="POST">
-                                                    <button
-                                                        class="flex items-center ml-3 text-sm text-red-500 hover:text-red-700 font-medium border-none bg-transparent"
-                                                        type="submit">
-                                                        <i class="fas fa-trash-alt text-sm mr-2"></i> Delete
-                                                    </button>
-                                                </form>
-                                                <!-- Edit Button -->
-                                                <button
-                                                    onclick="showEditForm('<%= review._id %>', '<%= review.body %>', '<%= review.rating %>')"
-                                                    class="flex items-center ml-3 text-sm text-blue-500 hover:text-blue-700 font-medium border-none bg-transparent">
-                                                    <i class="fas fa-edit text-sm mr-2"></i> Edit
-                                                </button>
-                                            </div>
-                                        </aside>
-                                        <% } %>
-                                </article>
-                            </div>
-
-                            <!-- Edit Form -->
-                            <div id="edit-form-<%= review._id %>" class="edit-form hidden">
-                                <form
-                                    action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=PUT"
-                                    method="POST">
-                                    <div class="mb-1">
-                                        <p class="text-xl font-semibold text-black">Rating</p>
-                                        <div class="star-rating">
-                                            <input type="hidden" name="review[rating]" id="rating-value"
-                                                value="<%=review.rating%>">
-                                            <i class="fa fa-star" data-value="1"></i>
-                                            <i class="fa fa-star" data-value="2"></i>
-                                            <i class="fa fa-star" data-value="3"></i>
-                                            <i class="fa fa-star" data-value="4"></i>
-                                            <i class="fa fa-star" data-value="5"></i>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="body"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Review</label>
-                                        <textarea id="body" rows="3"
-                                            class="block p-2.5 w-50 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Write your thoughts here..."
-                                            name="review[body]"><%= review.body %></textarea>
-                                        <button type="submit" class="text-sm font-medium text-green-400"><i
-                                                class="fas fa-paper-plane mr-2"></i>Update review</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <% } %>
+        <% if (currentUser && !hasReviewed) { %>
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3">Leave a Review</h2>
+        <div class="bg-white p-4 rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-200">
+            <form action="/neighborhoods/<%= neighborhood._id %>/reviews" method="POST">
+                <div class="mb-3">
+                    <p class="text-xl font-semibold text-black mb-2">Rating</p>
+                    <div class="star-rating flex">
+                        <input type="hidden" name="review[rating]" id="rating-value" value="1">
+                        <i class="fa fa-star" data-value="1"></i>
+                        <i class="fa fa-star" data-value="2"></i>
+                        <i class="fa fa-star" data-value="3"></i>
+                        <i class="fa fa-star" data-value="4"></i>
+                        <i class="fa fa-star" data-value="5"></i>
+                    </div>
                 </div>
-
+                <div class="mb-3">
+                    <label for="body" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Review</label>
+                    <textarea id="body" rows="3"
+                        class="block p-2.5 w-50 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Write your thoughts here..." name="review[body]" required></textarea>
+                    <button type="submit" class="text-sm font-medium text-green-400"><i class="fas fa-paper-plane mr-2"></i> Add review</button>
+                </div>
+            </form>
         </div>
+        <% } %>
 
+        <% for (let review of neighborhood.reviews) { %>
+            <figure class="w-full ml-16 p-3 mb-3 bg-gray-50 rounded-sm">
+                <div class="flex items-center mb-1 text-yellow-300">
+                    <div class="star-rating-display">
+                        <% for (let i = 1; i <= 5; i++) { %>
+                            <i class="fa fa-star <%= review.rating >= i ? 'checked' : '' %>"></i>
+                        <% } %>
+                    </div>
+                    <a href="#"
+                    class="px-2 ml-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</a>
+                    <% if (currentUser && review.author.equals(currentUser._id)) { %>
+                    <div class="flex items-center ml-2">
+                    <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                        <button class="flex items-center ml-3 text-sm text-red-500 hover:text-red-700 font-medium border-none bg-transparent" type="submit">
+                            <i class="fas fa-trash-alt text-sm mr-2"></i> Delete
+                        </button>
+                    </form>
+                    <button onclick="showEditForm('<%= review._id %>', '<%= review.body %>', '<%= review.rating %>')"
+                        class="flex items-center ml-3 text-sm text-blue-500 hover:text-blue-700 font-medium border-none bg-transparent">
+                        <i class="fas fa-edit text-sm mr-2"></i> Edit
+                    </button>
+                    </div>
+                    <% } %>
+
+                </div>
+                <blockquote class="text-sm mb-2 italic font-semibold text-start text-gray-900 dark:text-white">
+                    "<%= review.body.charAt(0).toUpperCase() + review.body.slice(1) %>"
+                </blockquote>
+                <figcaption class="flex items-center mt- space-x-3 rtl:space-x-reverse">
+                    <img class="w-8 h-8 rounded-full object-cover" src="https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile picture">
+                    <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
+                        <cite class="pe-3 font-medium text-gray-900 dark:text-white"><%= review.author.username.charAt(0).toUpperCase() + review.author.username.slice(1) %></cite>
+                        <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400"><time class="review-date" data-date="<%= review.createdAt.toISOString() %>"></time></cite>
+                    </div>
+                </figcaption>
+            </figure>
+
+                    <!--EDIT FORM  -->
+            <div id="edit-form-<%= review._id %>" class="edit-form hidden">
+                <form
+                    action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=PUT"
+                    method="POST">
+                    <div class="mb-1">
+                        <p class="text-xl font-semibold text-black">Rating</p>
+                        <div class="star-rating">
+                            <input type="hidden" name="review[rating]" id="rating-value"
+                                value="<%=review.rating%>">
+                            <i class="fa fa-star" data-value="1"></i>
+                            <i class="fa fa-star" data-value="2"></i>
+                            <i class="fa fa-star" data-value="3"></i>
+                            <i class="fa fa-star" data-value="4"></i>
+                            <i class="fa fa-star" data-value="5"></i>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="body"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Review</label>
+                        <textarea id="body" rows="3"
+                            class="block p-2.5 w-50 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Write your thoughts here..."
+                            name="review[body]"><%= review.body %></textarea>
+                        <button type="submit" class="text-sm font-medium text-green-400"><i
+                                class="fas fa-paper-plane mr-2"></i>Update review</button>
+                    </div>
+                </form>
+            </div>
+        <% } %>
     </div>
+</div>
