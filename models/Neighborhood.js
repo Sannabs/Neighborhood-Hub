@@ -2,6 +2,19 @@ const mongoose = require('mongoose');
 const Review = require('./Review');
 const { Schema } = mongoose;
 
+
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+})
+
+ImageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_200');
+});
+
+const opts = { toJSON: { virtuals: true } }
+
+
 const HoodSchema = new Schema({
     title: {
         type: String,
@@ -10,6 +23,7 @@ const HoodSchema = new Schema({
     name: {
         type: String,
     },
+    images: [ImageSchema],
     location: {
         type: String,
         required: true
@@ -50,7 +64,7 @@ const HoodSchema = new Schema({
         ref: 'User'
     }
 
-});
+}, opts);
 
 
 HoodSchema.post('findOneAndDelete', async function (doc) {

@@ -31,6 +31,7 @@ router.put('/:reviewId', isLoggedIn, isReviewAuthor, validateReview, catchAsync(
         { rating, body },
         { new: true }
     );
+    req.flash('success', 'Review updated!')
     res.redirect(`/neighborhoods/${id}`);
 }));
 
@@ -39,6 +40,7 @@ router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async (req, r
     const { id, reviewId } = req.params
     await Neighborhood.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
     await Review.findByIdAndDelete(reviewId)
+    req.flash('success', 'Review deleted successfully!')
     res.redirect(`/neighborhoods/${id}`)
 }))
 

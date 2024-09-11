@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
+
 // export during refactoring
 const ExpressError = require('./utils/ExpressError');
 const express = require('express');

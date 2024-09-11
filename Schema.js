@@ -13,7 +13,8 @@ module.exports.HoodSchema = Joi.object({
         population: Joi.number().min(0),
         businesses: Joi.array().items(Joi.string().allow('')).optional(),  // Optional and can be empty
         cordinates: Joi.array().items(Joi.number())  // Optional array of numbers (for coordinates)
-    }).required()
+    }).required(),
+    deleteImages: Joi.array()
 });
 
 module.exports.reviewSchema = Joi.object({
