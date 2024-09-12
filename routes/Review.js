@@ -17,7 +17,6 @@ router.route('/:reviewId')
     .delete(isLoggedIn, isReviewAuthor, catchAsync(review.deleteReview))
     .put(isLoggedIn, isReviewAuthor, validateReview, catchAsync(review.updateReview));
 
-router.post('/:reviewId/update-helpful', isLoggedIn, review.foundHelpful);
 
 
 
