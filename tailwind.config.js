@@ -6,10 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Open Sans', 'Helvetica', 'Arial', 'sans-serif'],
-        'serif': ['Merriweather', 'Georgia', 'serif'],
-        'mono': ['Fira Code', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
-        'custom': ['Noto Sans Display', 'sans-serif'],
+        sans: ['Poppins', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji']
       }
     },
   },

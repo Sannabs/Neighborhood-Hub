@@ -8,8 +8,6 @@ function formatDate(date) {
   const diffInMonths = Math.floor(diffInWeeks / 4);
   const diffInYears = Math.floor(diffInMonths / 12);
 
-
-
   if (diffInSeconds < 60) return 'Just now';
   if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
   if (diffInHours < 24) return `${diffInHours} hours ago`;
@@ -20,13 +18,18 @@ function formatDate(date) {
 
 window.formatDate = formatDate;
 
-
-// add the function to the review dates when the Dom is fully loaded
-
 document.addEventListener('DOMContentLoaded', () => {
-  const reviewDates = document.querySelectorAll('.review-date');
-  reviewDates.forEach(dateElement => {
+  const updateReviewDates = () => {
+    const reviewDates = document.querySelectorAll('.review-date');
+    reviewDates.forEach(dateElement => {
       const date = dateElement.getAttribute('data-date');
       dateElement.textContent = formatDate(date);
-  });
+    });
+  };
+
+  // Update the dates initially
+  updateReviewDates();
+
+  // Set an interval to update the dates every minute (60000ms)
+  setInterval(updateReviewDates, 60000);
 });

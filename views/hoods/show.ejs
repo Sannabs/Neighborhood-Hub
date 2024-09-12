@@ -85,7 +85,7 @@
 
     <!-- Placeholder for Future Map Section -->
     <div class="w-full mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Map of the Neighborhood</h2>
+        <h2 class="text-xl font-pop font-semibold text-gray-800 dark:text-gray-200 mb-4">Map of the Neighborhood</h2>
         <div class="h-64 bg-gray-200 rounded-lg dark:bg-gray-700">
             <!-- Map will be embedded here -->
         </div>
@@ -137,8 +137,10 @@
                             <i class="fa fa-star <%= review.rating >= i ? 'checked' : '' %>"></i>
                         <% } %>
                     </div>
-                    <a href="#"
-                    class="px-2 ml-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</a>
+                    <button
+                    data-review-id="<%= review._id %>"
+                    class="helpful-button px-2 ml-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</button>
+                    <span class="helpful-count ml-3" data-review-id="<%= review._id %>"><%= review.helpfulCount %> people found this helpful</span>
                     <% if (currentUser && review.author.equals(currentUser._id)) { %>
                     <div class="flex items-center ml-2">
                     <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
