@@ -20,7 +20,22 @@ const reviewSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    helpfulCount: {type: Number, default: 0},
+    helpfuls: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'  // Array of users who liked the review
+    }],
+    helpfulCount: {
+        type: Number,
+        default: 0
+    },
+    notHelpfuls: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'  // Array of users who disliked the review
+    }],
+    notHelpfulCount: {
+        type: Number,
+        default: 0
+    }
 });
 
 const Review = mongoose.model('Review', reviewSchema);

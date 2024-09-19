@@ -77,6 +77,7 @@ passport.deserializeUser(User.deserializeUser());
 // flash message middleware
 app.use((req, res, next) => {
     res.locals.currentUser = req.user 
+    res.locals.googleapikey = process.env.GOOGLE_MAPS_API_KEY;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();

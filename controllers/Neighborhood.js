@@ -1,8 +1,11 @@
 const express = require('express');
 const Neighborhood = require('../models/Neighborhood')
 const { cloudinary } = require('../cloudinary/index');
-
-
+// const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+// const mapBoxToken = process.env.MAPBOX_TOKEN;
+const fetch = require('node-fetch');
+const googleMapsAPIKey = process.env.GOOGLE_MAPS_API_KEY;
+// const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
     const neighborhoods = await Neighborhood.find({})
@@ -13,11 +16,28 @@ module.exports.renderNewForm = (req, res) => {
     res.render('hoods/new')
 }
 
-module.exports.createNeigborhood = async (req, res) => {
+module.exports.createNeighborhood = async (req, res) => {
+
+    const location = `${req.body.neighborhood.location} The Gambia`;
+    const geoDataResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(location)}&key=${googleMapsAPIKey}`);
+    const geoData = await geoDataResponse.json();
+
+    if (geoData.status !== 'OK') {
+        req.flash('error', 'Could not find location');
+        return res.redirect('/neighborhoods/new');
+    }
+
+    const {lat, lng} = geoData.results[0].geometry.location;
+
     const neighborhood = new Neighborhood(req.body.neighborhood)
+    neighborhood.geometry = {
+        type: 'Point',
+        coordinates: [lng, lat] 
+    };
     neighborhood.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     neighborhood.author = req.user._id;
     await neighborhood.save();
+    console.log(neighborhood.geometry.coordinates)
     req.flash('success', 'Successfully made a new neighborhood!')
     res.redirect(`/neighborhoods/${neighborhood._id}`)
 }

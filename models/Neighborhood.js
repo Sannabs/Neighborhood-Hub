@@ -20,10 +20,19 @@ const HoodSchema = new Schema({
         type: String,
         required: true
     },
-    name: {
-        type: String,
-    },
     images: [ImageSchema],
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+
+    },
     location: {
         type: String,
         required: true
@@ -48,10 +57,6 @@ const HoodSchema = new Schema({
         min: 0
     },
     businesses: [String],
-    cordinates: {
-        type: [Number]
-        // required: true
-    },
     reviews: [
         {
             type: Schema.Types.ObjectId,
@@ -65,6 +70,13 @@ const HoodSchema = new Schema({
     }
 
 }, opts);
+
+
+// // on the map  only if i were showing the map on the index page. but since it is the showpage only then i dont need it
+HoodSchema.virtual('properties.popUpMarkup').get(function () {
+    return `<strong><a href="/neighborhoods/${this._id}">${this.location}</a></strong>
+    <p>${this.description.substring(0, 20)}...</p>`
+});
 
 
 HoodSchema.post('findOneAndDelete', async function (doc) {

@@ -18,7 +18,8 @@ router.route('/:reviewId')
     .put(isLoggedIn, isReviewAuthor, validateReview, catchAsync(review.updateReview));
 
 
-
+router.post('/:reviewId/helpful', isLoggedIn, catchAsync(review.Helpful))
+router.post('/:reviewId/notHelpful', isLoggedIn, catchAsync(review.NotHelpful))
 
 
 

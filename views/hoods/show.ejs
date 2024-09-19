@@ -60,9 +60,14 @@
                 <%= neighborhood.transport %>
             </p>
             <p class="mb-2 text-gray-700 dark:text-gray-400">
-                <i class="fas fa-store mr-2 text-purple-500"></i>
+                <i class="fas text-purple-500 fa-store mr-2 "></i>
                 <%= neighborhood.businesses %>
             </p>
+            <p class="mb-2 text-gray-700 dark:text-gray-400">
+                <i class="fas text-blue-500 fa-school mr-2"></i>
+                <%= neighborhood.schools %>
+            </p>
+
 
             <!-- Action Buttons -->
             <% if (currentUser && neighborhood.author.equals(currentUser._id)) { %>
@@ -86,11 +91,22 @@
     <!-- Placeholder for Future Map Section -->
     <div class="w-full mb-6">
         <h2 class="text-xl font-pop font-semibold text-gray-800 dark:text-gray-200 mb-4">Map of the Neighborhood</h2>
-        <div class="h-64 bg-gray-200 rounded-lg dark:bg-gray-700">
-            <!-- Map will be embedded here -->
+        <div id="map" class="h-80 bg-gray-200 rounded-lg dark:bg-gray-700"></div>
+        <div class="info-box flex">
+            <div id="directions"></div>
+            <div class="ml-3">
+                <button id="walking"><i class="fas fa-walking mr-1 ml-1 text-blue-600"></i>
+                    Walking</button>
+                <button id="driving"><i class="fas fa-car mr-1 ml-1 text-blue-600"></i>
+                    Driving</button>
+            </div>
+        </div>
+        <div class="mt-2">
+            <button id="roadmap" class=" px-1 py-1 bg-blue-500 text-white rounded">Road Map View</button>
+            <button id="hybrid" class=" px-1 py-1 bg-purple-400 text-white rounded">Satellite View</button> <!-- Hybrid view button -->        
         </div>
     </div>
-
+    
     <!-- Placeholder for Future Review Section -->
     <div class="w-full ml-5">
         <% let hasReviewed = false; %>
@@ -137,24 +153,20 @@
                             <i class="fa fa-star <%= review.rating >= i ? 'checked' : '' %>"></i>
                         <% } %>
                     </div>
-                    <button
-                    data-review-id="<%= review._id %>"
-                    class="helpful-button px-2 ml-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</button>
-                    <span class="helpful-count ml-3" data-review-id="<%= review._id %>"><%= review.helpfulCount %> people found this helpful</span>
+        
                     <% if (currentUser && review.author.equals(currentUser._id)) { %>
                     <div class="flex items-center ml-2">
-                    <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                        <button class="flex items-center ml-3 text-sm text-red-500 hover:text-red-700 font-medium border-none bg-transparent" type="submit">
-                            <i class="fas fa-trash-alt text-sm mr-2"></i> Delete
+                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                            <button class="flex items-center ml-3 text-sm text-red-500 hover:text-red-700 font-medium border-none bg-transparent" type="submit">
+                                <i class="fas fa-trash-alt text-sm mr-2"></i> Delete
+                            </button>
+                        </form>
+                        <button onclick="showEditForm('<%= review._id %>', '<%= review.body %>', '<%= review.rating %>')"
+                            class="flex items-center ml-3 text-sm text-blue-500 hover:text-blue-700 font-medium border-none bg-transparent">
+                            <i class="fas fa-edit text-sm mr-2"></i> Edit
                         </button>
-                    </form>
-                    <button onclick="showEditForm('<%= review._id %>', '<%= review.body %>', '<%= review.rating %>')"
-                        class="flex items-center ml-3 text-sm text-blue-500 hover:text-blue-700 font-medium border-none bg-transparent">
-                        <i class="fas fa-edit text-sm mr-2"></i> Edit
-                    </button>
                     </div>
                     <% } %>
-
                 </div>
                 <blockquote class="text-sm mb-2 italic font-semibold text-start text-gray-900 dark:text-white">
                     "<%= review.body.charAt(0).toUpperCase() + review.body.slice(1) %>"
@@ -165,19 +177,57 @@
                         <cite class="pe-3 font-medium text-gray-900 dark:text-white"><%= review.author.username.charAt(0).toUpperCase() + review.author.username.slice(1) %></cite>
                         <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400"><time class="review-date" data-date="<%= review.createdAt.toISOString() %>"></time></cite>
                     </div>
-                </figcaption>
-            </figure>
+                                        <!-- LIKE AND DISLIKE -->
+                    <% if (currentUser) { %>
+                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>/helpful" method="POST">
+                            <button
+                                class="flex items-center ml-3 text-sm font-medium border-none
+                                       <%= review.helpfuls.includes(currentUser._id) ? 'text-blue-500 bg-blue-100' : 'text-black bg-gray-100' %>
+                                       hover:bg-gray-200"
+                                type="submit">
+                                <i class="fas fa-thumbs-up text-sm mr-2"></i>
+                                <%= review.helpfuls.includes(currentUser._id) ? 'Helpful' : 'Helpful' %> (<%= review.helpfulCount %>)
+                            </button>
+                        </form>
+                       
+                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>/notHelpful" method="POST">
+                            <button
+                                class="flex items-center ml-3 text-sm font-medium border-none
+                                       <%= review.notHelpfuls.includes(currentUser._id) ? 'text-red-500 bg-red-100' : 'text-black bg-gray-100' %>
+                                       hover:bg-gray-200"
+                                type="submit">
+                                <i class="fas fa-thumbs-down text-sm mr-2"></i>
+                                <%= review.notHelpfuls.includes(currentUser._id) ? 'Not Helpful' : 'Not Helpful' %> (<%= review.notHelpfulCount %>)
+                            </button>
+                        </form>
+                    <% } else { %>
+                        <!-- Display default buttons or messages if user is not logged in --> 
+                        <button
+                            class="flex items-center ml-3 text-sm font-medium border-none text-blue-400 bg-gray-100 cursor-not-allowed opacity-90"
+                            disabled>
+                            <i class="fas fa-thumbs-up text-sm mr-2"></i>
+                            Helpful (<%= review.helpfulCount %>)
+                        </button>
+                        
+                        <button
+                            class="flex items-center ml-3 text-sm font-medium border-none text-red-400 bg-gray-100 cursor-not-allowed opacity-90"
+                            disabled>
+                            <i class="fas fa-thumbs-down text-sm mr-2"></i>
+                            Not Helpful (<%= review.notHelpfulCount %>)
+                        </button>
+                        <% } %>
 
-                    <!--EDIT FORM  -->
+                </figcaption>
+                
+            </figure>
+        
+            <!--EDIT FORM-->
             <div id="edit-form-<%= review._id %>" class="edit-form hidden">
-                <form
-                    action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=PUT"
-                    method="POST">
+                <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>?_method=PUT" method="POST">
                     <div class="mb-1">
                         <p class="text-xl font-semibold text-black">Rating</p>
                         <div class="star-rating">
-                            <input type="hidden" name="review[rating]" id="rating-value"
-                                value="<%=review.rating%>">
+                            <input type="hidden" name="review[rating]" id="rating-value" value="<%=review.rating%>">
                             <i class="fa fa-star" data-value="1"></i>
                             <i class="fa fa-star" data-value="2"></i>
                             <i class="fa fa-star" data-value="3"></i>
@@ -186,17 +236,23 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="body"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Review</label>
+                        <label for="body" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Review</label>
                         <textarea id="body" rows="3"
                             class="block p-2.5 w-50 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Write your thoughts here..."
                             name="review[body]"><%= review.body %></textarea>
-                        <button type="submit" class="text-sm font-medium text-green-400"><i
-                                class="fas fa-paper-plane mr-2"></i>Update review</button>
+                        <button type="submit" class="text-sm font-medium text-green-400"><i class="fas fa-paper-plane mr-2"></i> Update review</button>
                     </div>
                 </form>
             </div>
         <% } %>
+        
     </div>
 </div>
+
+<script>
+    // const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+    const neighborhood = <%- JSON.stringify(neighborhood) %>;
+</script>
+    
+<script src="/javascripts/showPageMap.js"></script>

@@ -3,7 +3,6 @@ const Joi = require('joi');
 module.exports.HoodSchema = Joi.object({
     neighborhood: Joi.object({
         title: Joi.string().required(),
-        name: Joi.string().allow(''),  // Optional, or set required if necessary
         location: Joi.string().required(),
         price: Joi.number().required().min(0),
         description: Joi.string().allow(''),  // Optional
