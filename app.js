@@ -27,7 +27,8 @@ const app = express()
 // IMPORTED ROUTES
 const neighborhoodRoutes = require('./routes/Neighborhood')
 const reviewRoutes = require('./routes/Review')
-const userRoutes = require('./routes/User')
+const userRoutes = require('./routes/User');
+const catchAsync = require('./utils/catchAsync');
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/Neigbor')
@@ -47,6 +48,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')))
+
 
 
 // cookie set up
@@ -76,7 +78,7 @@ passport.deserializeUser(User.deserializeUser());
 
 // flash message middleware
 app.use((req, res, next) => {
-    res.locals.currentUser = req.user 
+    res.locals.currentUser = req.user
     res.locals.googleapikey = process.env.GOOGLE_MAPS_API_KEY;
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
@@ -90,7 +92,24 @@ app.get('/', (req, res) => {
     res.send("HOME PAGE!")
 })
 
-
+app.get('/search', catchAsync(async (req, res) => {
+    const query = req.query.q;
+    if (!query) {
+        return res.json([]);
+    }
+    try {
+        const neighborhoods = await Neighborhood.find({
+            $or: [
+                { location: { $regex: query, $options: 'i' } },
+                { title: { $regex: query, $options: 'i' } }
+            ]
+        }).select('_id title location').limit(10);
+        res.json(neighborhoods);
+    } catch (e) {
+        res.status(500).send('SERVER ERROR');
+        console.error(e)
+    }
+}));
 
 // MY ROUTES PREFIX
 app.use('/neighborhoods', neighborhoodRoutes)

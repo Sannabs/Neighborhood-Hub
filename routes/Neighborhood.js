@@ -23,6 +23,7 @@ router.route('/')
     .get(catchAsync(neighborhood.index))
     .post(isLoggedIn, upload.array('image'), validateNeighborhood, catchAsync(neighborhood.createNeighborhood))
 
+
 // ADD NEW
 router.get('/new', isLoggedIn, neighborhood.renderNewForm)
 

@@ -12,6 +12,7 @@ module.exports.index = async (req, res) => {
     res.render('hoods/index', { neighborhoods })
 }
 
+
 module.exports.renderNewForm = (req, res) => {
     res.render('hoods/new')
 }

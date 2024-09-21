@@ -1,4 +1,4 @@
-document.getElementById('image').addEventListener('change', function(event) {
+document.addEventListener('change', function(event) {
     const fileNamesContainer = document.getElementById('file-names');
     const files = event.target.files;
     fileNamesContainer.innerHTML = '';

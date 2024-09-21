@@ -1,0 +1,21 @@
+.title {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.links a:hover {
+  border-bottom: 2px solid #1d3557;
+  color: #3a86ff !important;
+  transition: 0.3s ease-out;
+}
+
+
+.mobile-links a:hover {
+  color: #3a86ff !important;
+  transition: 0.3s ease-out;
+}
+
+.burger:hover {
+  color: #3a86ff !important;
+  text-shadow: #1d3557;
+  transition: 0.2s ease-out;
+}
