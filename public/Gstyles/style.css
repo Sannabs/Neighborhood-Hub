@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap');
+
 html, body {
     height: 100%;
     margin: 0;
@@ -44,3 +46,41 @@ main {
   .custom-map-control-button:hover {
     background: rgb(235, 235, 235);
   }
+
+
+.no-fav {
+    background-color: #f0f8ff;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper {
+    /* background-color: pink; */
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.w-container{
+    width: 100%;
+}
+
+.page-title h1 {
+    /* font-size: 50px; */
+    margin-bottom: 50px;
+    line-height: 1.1em;
+    letter-spacing: -0.045em;
+    font-family: 'Noto Sans', sans-serif;
+    font-variation-settings: 'wght' 900;
+}
+
+.page-title div {
+    color: #7d7c83;
+    line-height: 1.7em;
+    font-size: 20px;
+    display: block;
+}

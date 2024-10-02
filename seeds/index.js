@@ -20,27 +20,27 @@ const seedDB = async () => {
         for (let i = 0; i < 50; i++) {
             const randIndex = Math.floor(Math.random() * hoods.length);
             const price = Math.floor(Math.random() * 500) + 300;
-            
+
             const hood = new Neighborhood({
                 title: `${sample(descriptors)}, ${sample(places)}`,
                 author: '66dd03b1a39c99761ffb1960',  // Ensure this is a valid user ID
                 location: `${hoods[randIndex].name}, ${hoods[randIndex].country}`,
                 price,
-                geometry: { 
-                    type: 'Point', 
+                geometry: {
+                    type: 'Point',
                     coordinates: [
                         hoods[randIndex].longitude,
                         hoods[randIndex].latitude
-                    ] 
+                    ]
                 },
                 images: [
                     {
-                        url: 'https://res.cloudinary.com/dg4dcyvol/image/upload/v1725985583/Neigbor/bjchnlqmj5rzmtrgxy2t.jpg',
-                        filename: 'Neigbor/bjchnlqmj5rzmtrgxy2t',
+                        url: 'https://res.cloudinary.com/dg4dcyvol/image/upload/v1727624640/Neigbor/azgdigc2rd7astqw1zbc.jpg',
+                        filename: 'Neigbor/azgdigc2rd7astqw1zbc'
                     },
                     {
-                        url: 'https://res.cloudinary.com/dg4dcyvol/image/upload/v1725985587/Neigbor/atzhetxqauzadth1ejsh.jpg',
-                        filename: 'Neigbor/atzhetxqauzadth1ejsh',
+                        url: 'https://res.cloudinary.com/dg4dcyvol/image/upload/v1727624642/Neigbor/l3mybhxjbxmyexnepfs2.jpg',
+                        filename: 'Neigbor/l3mybhxjbxmyexnepfs2'
                     }
                 ],
                 description: hoods[randIndex].description,

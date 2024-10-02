@@ -1,18 +1,9 @@
 <%- layout('layouts/boiler') %>
-    <div class="flex flex-col">
-        <div class="wrapper">
-            <div class="w-container text-center">
-                <div class="page-title">
-                    <h1 class="text-4xl" >Explore Local Neighborhood Gems</h1>
-                    <div>Uncover the charm of diverse neighborhoods and get inspired to explore <br> your next favorite place to call home.</div>
-                </div>
-            </div>
-        </div>
-    
-        <div class="flex flex-wrap gap-4 justify-center mt-2">
+    <div class="flex flex-wrap gap-4 justify-center mt-2">
 
-            <% for (let neighborhood of neighborhoods) { %>
+        <% for (let neighborhood of topRating) { %>
 
+            <% if(neighborhood.avgRating !==0 && neighborhood.reviews.length >= 2) {%>
                 <div
                     class="uniform-card max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div id="default-carousel" class="relative w-full h-56" data-carousel="static">
@@ -76,24 +67,21 @@
                             </h5>
                             <div class="inline-flex">
                                 <% if(currentUser) {%>
-                                    <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST"
-                                        class="ml-3">
+                                    <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST" class="ml-3">
                                         <button
-                                            class="flex items-center ml-3 text-sm font-medium border-none <%= neighborhood.favourites.includes(currentUser._id) ? 'text-red-600' : 'text-gray-300' %>"
-                                            title="<%= neighborhood.favourites.includes(currentUser._id) ? 'Remove from favourites' : 'Add to favourites' %>"
-                                            type="submit">
-                                            <i class="fa-solid fa-heart text-xl mr-2"></i>
+                                            class="flex items-center ml-3 text-sm font-medium border-none
+                                                   <%= neighborhood.favourites.includes(currentUser._id) ? 'text-red-600' : 'text-gray-300' %>"
+                                            title="<%= neighborhood.favourites.includes(currentUser._id) ? 'Remove from favourites' : 'Add to favourites' %>" type="submit">
+                                            <i class="<%= neighborhood.favourites.includes(currentUser._id) ? 'fa-solid fa-heart text-xl mr-2' : 'fa-solid fa-heart text-xl mr-2' %> "></i>
                                         </button>
-
-                                    </form>
+                                </form>
+        
                                     <% } %>
-
-                                        <p class="font-semibold mr-1"><i
-                                                class="fas fa-star text-l text-yellow-300 mr-1"></i>
-                                            <%=neighborhood.avgRating.toFixed(1) %>
-                                        </p>
-
-                            </div>
+            
+                                <p class="font-semibold mr-1"><i class="fas fa-star text-l text-yellow-300"></i><%=neighborhood.avgRating.toFixed(1)%></p>
+        
+                            </div>                        
+        
                         </div>
                         <p class="font-normal text-gray-700 dark:text-gray-400">
                             <%= neighborhood.location %>
@@ -119,5 +107,5 @@
                     </div>
                 </div>
                 <% } %>
-        </div>
+                    <% } %>
     </div>

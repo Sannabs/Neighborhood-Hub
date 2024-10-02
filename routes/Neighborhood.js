@@ -24,6 +24,10 @@ router.route('/')
     .post(isLoggedIn, upload.array('image'), validateNeighborhood, catchAsync(neighborhood.createNeighborhood))
 
 
+router.get('/popular', catchAsync(neighborhood.popular))
+
+router.get('/favourites', catchAsync(neighborhood.showFavouriteNeighborhoods))
+
 // ADD NEW
 router.get('/new', isLoggedIn, neighborhood.renderNewForm)
 
@@ -37,6 +41,7 @@ router.route('/:id')
 
 // UPDATING
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(neighborhood.renderEditForm))
+router.post('/:id/favourites', isLoggedIn, catchAsync(neighborhood.Favourites))
 
 
 

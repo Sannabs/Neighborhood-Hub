@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 .title {
   font-family: 'Montserrat', sans-serif;
 }
@@ -19,3 +21,19 @@
   text-shadow: #1d3557;
   transition: 0.2s ease-out;
 }
+
+.fav {
+  font-family: 'Poppins', sans-serif;
+  /* letter-spacing: 3px; */
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+.fav:hover {
+  border-bottom: none !important; 
+}
+
+.fav i {
+  color: blue !important;
+  margin-left: 5px;
+}
+

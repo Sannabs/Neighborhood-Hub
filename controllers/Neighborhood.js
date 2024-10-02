@@ -8,9 +8,63 @@ const googleMapsAPIKey = process.env.GOOGLE_MAPS_API_KEY;
 // const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 module.exports.index = async (req, res) => {
-    const neighborhoods = await Neighborhood.find({})
+
+    const neighborhoods = await Neighborhood.find({}).populate({
+        path: 'reviews'
+    })
+
+    neighborhoods.forEach(neighborhood => {
+        if (neighborhood.reviews.length > 0) {
+            const avgRating = neighborhood.reviews.reduce((sum, review) => sum + review.rating, 0) / neighborhood.reviews.length;
+            neighborhood.avgRating = avgRating;
+        } else {
+            neighborhood.avgRating = 0
+        }
+    })
     res.render('hoods/index', { neighborhoods })
 }
+
+module.exports.popular = async (req, res) => {
+    const neighborhoods = await Neighborhood.find({}).populate({
+        path: 'reviews'
+    })
+
+    neighborhoods.forEach(neighborhood => {
+        if (neighborhood.reviews.length > 0) {
+            const avgRating = neighborhood.reviews.reduce((sum, review) => sum + review.rating, 0) / neighborhood.reviews.length
+            neighborhood.avgRating = avgRating;
+        } else {
+            neighborhood.avgRating = 0
+        }
+
+    })
+    const topRating = neighborhoods.sort((a, b) => b.avgRating - a.avgRating).slice(0, 20)
+    res.render('hoods/popular', { topRating })
+}
+
+module.exports.showFavouriteNeighborhoods = async (req, res) => {
+    const userId = req.user._id;
+    const favouriteNeighborhoods = await Neighborhood.find({
+        favourites: userId
+    }).populate({
+        path: 'reviews'
+    });
+
+    favouriteNeighborhoods.forEach(neighborhood => {
+        if (neighborhood.reviews.length > 0) {
+            const avgRating = neighborhood.reviews.reduce((sum, review) => sum + review.rating, 0) / neighborhood.reviews.length;
+            neighborhood.avgRating = avgRating;
+        } else {
+            neighborhood.avgRating = 0;
+        }
+    });
+
+    if (favouriteNeighborhoods.length > 0) {
+        res.render('hoods/favourites', { favouriteNeighborhoods });
+    } else {
+        res.render('hoods/nofavourites');
+    }
+};
 
 
 module.exports.renderNewForm = (req, res) => {
@@ -28,17 +82,16 @@ module.exports.createNeighborhood = async (req, res) => {
         return res.redirect('/neighborhoods/new');
     }
 
-    const {lat, lng} = geoData.results[0].geometry.location;
+    const { lat, lng } = geoData.results[0].geometry.location;
 
     const neighborhood = new Neighborhood(req.body.neighborhood)
     neighborhood.geometry = {
         type: 'Point',
-        coordinates: [lng, lat] 
+        coordinates: [lng, lat]
     };
     neighborhood.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     neighborhood.author = req.user._id;
     await neighborhood.save();
-    console.log(neighborhood.geometry.coordinates)
     req.flash('success', 'Successfully made a new neighborhood!')
     res.redirect(`/neighborhoods/${neighborhood._id}`)
 }
@@ -52,6 +105,7 @@ module.exports.showNeighborhood = async (req, res) => {
         }
     }).populate('author')
     res.render('hoods/show', { neighborhood })
+
 }
 
 module.exports.renderEditForm = async (req, res) => {
@@ -87,3 +141,17 @@ module.exports.deleteNeighborhood = async (req, res) => {
     res.redirect(`/neighborhoods`)
 }
 
+module.exports.Favourites = async (req, res) => {
+    const { id } = req.params
+    const userId = req.user._id
+    const neighborhood = await Neighborhood.findById(id)
+    if (neighborhood.favourites.includes(userId)) {
+        neighborhood.favourites.pull(userId)
+        req.flash('success', `${neighborhood.location} Has been removed from your favourites`)
+    } else {
+        neighborhood.favourites.push(userId)
+        req.flash('success', `${neighborhood.location} Has been added to your favourites`)
+    }
+    await neighborhood.save();
+    res.redirect('/neighborhoods')
+}

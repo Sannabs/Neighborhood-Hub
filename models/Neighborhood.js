@@ -67,7 +67,11 @@ const HoodSchema = new Schema({
     {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    }, 
+    favourites: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 
 }, opts);
 

@@ -11,7 +11,7 @@ function formatDate(date) {
   if (diffInSeconds < 60) return 'Just now';
   if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
   if (diffInHours < 24) return `${diffInHours} hours ago`;
-  if (diffInDays < 7) return `${diffInDays} days ago`;
+  if (diffInDays < 7) return  diffInDays === 1 ? `${diffInDays} day ago` : `${diffInDays} days ago`;
   if (diffInWeeks < 4) return `${diffInWeeks} weeks ago`;
   return `${diffInYears} years ago`;
 }
