@@ -1,8 +1,8 @@
-<nav class="navbar bg-white py-2 w-full shadow-sm sticky top-0 z-50">
+<nav class="navbar bg-white py-1 w-full shadow-sm sticky top-0 z-50">
   <div class="container mx-auto flex items-center justify-between">
     <!-- Logo and title -->
-    <a href="/neighborhoods" class="flex items-center space-x-2 text-blue-800 text-xl">
-      <img src="/images/p-logo.jpg" alt="Neighborhood logo" class="h-8">
+    <a href="/neighborhoods" class="flex items-center space-x-1 text-blue-800 text-xl">
+      <img src="/images/p-logo.jpg" alt="Testimonial 3" class="w-16 h-16 rounded-full object-cover">
       <span class="title font-bold">Neighborhood Hub</span>
     </a>
 
@@ -17,15 +17,19 @@
 
     <!-- Links -->
     <div class="links hidden md:flex items-center space-x-6 font-semibold text-sm">
-      <a href="/neighborhoods" class="text-black">Neighborhoods</a>
-      <a href="/neighborhoods/new" class="text-black">Add Neighborhood</a>
-      <a href="/neighborhoods/popular" class="text-black">Popular</a>
+      <a href="/neighborhoods" class="text-black hover:text-blue-500"><i class="fas fa-city mr-2"></i>Neighborhoods</a>
+      <a href="/neighborhoods/new" class="text-black"><i class="fas fa-circle-plus mr-2"></i>Add Neighborhood</a>
+      <a href="/neighborhoods/popular" class="text-black"><i class="fas fa-crown mr-2"></i>Popular</a>
       <% if(currentUser) {%>
         <a href="/neighborhoods/favourites" class="fav">
-          Favourites <i class="fas fa-heart-circle-check text-xl text-blue-600"></i>
+          <i class="fas fa-heart-circle-check text-xl text-blue-600 mr-2"></i>  Favourites 
       </a>    
   
-        <% } %>
+        <% } else {%>
+          <p class="fav-login">
+            <i class="fas fa-heart-circle-check text-xl text-blue-600 mr-2"></i>  Favourites 
+          </p>    
+          <% } %>
     
       <% if(!currentUser) { %>
         <a href="/login" class="text-black">Login</a>
@@ -47,14 +51,21 @@
   </div>
   <!-- Collapsible Links for Mobile -->
   <div id="mobile-menu" class="mobile-links hidden md:hidden flex flex-col space-y-2 mt-3 ml-3 font-semibold text-sm">
-    <a href="/neighborhoods" class="text-black">Neighborhoods</a>
-    <a href="/neighborhoods/new" class="text-black">Add Neighborhood</a>
-    <a href="/neighborhoods/popular" class="text-black">Popular</a>
+    <a href="/neighborhoods" class="active text-black"><i class="fas fa-city mr-2"></i>Neighborhoods</a>
+    <a href="/neighborhoods/new" class="text-black"><i class="fas fa-circle-plus mr-2"></i>Add Neighborhood</a>
+    <a href="/neighborhoods/popular" class="text-black"><i class="fas fa-crown mr-2"></i>Popular</a>
     <% if(currentUser) {%>
       <a href="/neighborhoods/favourites" class="fav">
-        Favourites <i class="fas fa-heart-circle-check text-xl text-blue-600"></i>
+        <i class="fas fa-heart-circle-check text-lg text-blue-600 mr-2"></i>Favourites 
     </a>    
-      <% } %>
+
+      <% } else {%>
+        <p class="fav-login">
+          <i class="fas fa-heart-circle-check text-xl text-blue-600 mr-2"></i>  Favourites 
+        </p>
+
+        <% } %>
+  
     <% if(!currentUser) { %>
       <a href="/login" class="text-black">Login</a>
     <% } %>

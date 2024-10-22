@@ -1,18 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 .title {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Lobster', cursive;
+}
+
+.title:hover {
+  color: #601cff;
+  transform: scale(1.05);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .links a:hover {
-  border-bottom: 2px solid #1d3557;
   color: #3a86ff !important;
-  transition: 0.3s ease-out;
+  transform: scale(1.05);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
+
 
 
 .mobile-links a:hover {
   color: #3a86ff !important;
+  transform: scale(1.05);
   transition: 0.3s ease-out;
 }
 
@@ -22,18 +30,78 @@
   transition: 0.2s ease-out;
 }
 
+.home-link a:hover {
+  color: #3a86ff;
+  transform: scale(1.02);
+  transition: 0.3s ease-out;
+
+}
+
+.home-mobile-link a:hover {
+  color: #3a86ff;
+  transform: scale(1.02);
+  transition: 0.3s ease-out;
+  }
+  
+
 .fav {
   font-family: 'Poppins', sans-serif;
-  /* letter-spacing: 3px; */
   font-size: 1rem;
   letter-spacing: 0.5px;
 }
+
 .fav:hover {
-  border-bottom: none !important; 
+  border-bottom: none !important;
 }
 
 .fav i {
   color: blue !important;
-  margin-left: 5px;
 }
 
+
+.fav-login {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.fav-login:hover {
+  border-bottom: none !important;
+}
+
+.fav-login i {
+  color: blue !important;
+}
+
+.fav-login {
+  position: relative;
+}
+
+.fav-login::after {
+  content: "Please Login to view your favourites";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  font-size: 0.8em;
+  background-color: #564b70;
+  color: #ffffff;
+  padding: 0px 5px;
+  border-radius: 5px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.fav-login:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.active {
+  transform: scale(1.05);
+  color: #3a86ff;
+  background-color: #92b1e4;
+  padding: 6px 10px;
+  border-radius: 12px; 
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}

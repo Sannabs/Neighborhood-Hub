@@ -4,7 +4,7 @@
             <div class="w-container text-center">
                 <div class="page-title">
                     <h1 class="text-4xl" >Explore Local Neighborhood Gems</h1>
-                    <div>Uncover the charm of diverse neighborhoods and get inspired to explore <br> your next favorite place to call home.</div>
+                    <div>Uncover the charm of diverse neighborhoods and get <br> inspired to explore your next favorite place to call home.</div>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
                             <div class="inline-flex">
                                 <% if(currentUser) {%>
                                     <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST"
-                                        class="ml-3">
+                                        class="ml-3 favourite-form">
                                         <button
                                             class="flex items-center ml-3 text-sm font-medium border-none <%= neighborhood.favourites.includes(currentUser._id) ? 'text-red-600' : 'text-gray-300' %>"
                                             title="<%= neighborhood.favourites.includes(currentUser._id) ? 'Remove from favourites' : 'Add to favourites' %>"
@@ -86,7 +86,13 @@
                                         </button>
 
                                     </form>
-                                    <% } %>
+                                    <% } else {%>
+                                        <a href="/login"class="flex items-center ml-3 text-sm font-medium border-none text-gray-300"
+                                        title="Add to favourites">
+                                            <i class="fa-solid fa-heart text-xl mr-2"></i>
+
+                                        </a>
+                                        <% } %>
 
                                         <p class="font-semibold mr-1"><i
                                                 class="fas fa-star text-l text-yellow-300 mr-1"></i>
@@ -121,3 +127,5 @@
                 <% } %>
         </div>
     </div>
+
+    <script src="/javascripts/preventRef.js"></script>

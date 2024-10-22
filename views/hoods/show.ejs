@@ -105,6 +105,14 @@
             <button id="roadmap" class=" px-1 py-1 bg-blue-500 text-white rounded">Road Map View</button>
             <button id="hybrid" class=" px-1 py-1 bg-purple-400 text-white rounded">Satellite View</button> <!-- Hybrid view button -->        
         </div>
+        <div class="show-map-container flex justify-end">
+            <div class="flex justify-center flex-col">
+                <p class="live-map-text font-semibold mb-1">To See Live Directions</p>
+                <p class="live-map-text font-semibold mb-1 flex justify-center">On Mobile</p>
+                <button class="live-map-text-btn footer-title show-map-button">Live <i class="fa-solid fa-map"></i></button>
+            </div>
+        </div>
+
     </div>
     
     <!-- Placeholder for Future Review Section -->
@@ -122,7 +130,7 @@
         <% if (currentUser && !hasReviewed) { %>
         <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3">Leave a Review</h2>
         <div class="bg-white p-4 rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-200">
-            <form action="/neighborhoods/<%= neighborhood._id %>/reviews" method="POST">
+            <form action="/neighborhoods/<%= neighborhood._id %>/reviews" method="POST" >
                 <div class="mb-3">
                     <p class="text-xl font-semibold text-black mb-2">Rating</p>
                     <div class="star-rating flex">
@@ -172,14 +180,15 @@
                     "<%= review.body.charAt(0).toUpperCase() + review.body.slice(1) %>"
                 </blockquote>
                 <figcaption class="flex items-center mt- space-x-3 rtl:space-x-reverse">
-                    <img class="w-8 h-8 rounded-full object-cover" src="https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg" alt="profile picture">
+                    <img class="w-8 h-8 rounded-full object-cover" src="/images/defaultAvat.webp" alt="profile picture">
                     <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
                         <cite class="pe-3 font-medium text-gray-900 dark:text-white"><%= review.author.username.charAt(0).toUpperCase() + review.author.username.slice(1) %></cite>
                         <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400"><time class="review-date" data-date="<%= review.createdAt.toISOString() %>"></time></cite>
                     </div>
+                    <div class="expression-container flex justify-center items-center flex-row">
                                         <!-- LIKE AND DISLIKE -->
                     <% if (currentUser) { %>
-                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>/helpful" method="POST">
+                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>/helpful" method="POST" class="helpful-form">
                             <button
                                 class="flex items-center ml-3 text-sm font-medium border-none
                                        <%= review.helpfuls.includes(currentUser._id) ? 'text-blue-500 bg-blue-100' : 'text-black bg-gray-100' %>
@@ -190,7 +199,7 @@
                             </button>
                         </form>
                        
-                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>/notHelpful" method="POST">
+                        <form action="/neighborhoods/<%= neighborhood._id %>/reviews/<%= review._id %>/notHelpful" method="POST" class="not-helpful-form">
                             <button
                                 class="flex items-center ml-3 text-sm font-medium border-none
                                        <%= review.notHelpfuls.includes(currentUser._id) ? 'text-red-500 bg-red-100' : 'text-black bg-gray-100' %>
@@ -216,7 +225,7 @@
                             Not Helpful (<%= review.notHelpfulCount %>)
                         </button>
                         <% } %>
-
+                    </div>
                 </figcaption>
                 
             </figure>
@@ -255,3 +264,5 @@
 </script>
     
 <script src="/javascripts/showPageMap.js"></script>
+<script src="/javascripts/preventRef.js"></script>
+<script src="/javascripts/liveMap.js"></script>

@@ -67,7 +67,7 @@
                             </h5>
                             <div class="inline-flex">
                                 <% if(currentUser) {%>
-                                    <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST" class="ml-3">
+                                    <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST" class="ml-3 favourite-form">
                                         <button
                                             class="flex items-center ml-3 text-sm font-medium border-none
                                                    <%= neighborhood.favourites.includes(currentUser._id) ? 'text-red-600' : 'text-gray-300' %>"
@@ -76,7 +76,14 @@
                                         </button>
                                 </form>
         
-                                    <% } %>
+                                    <% } else {%>
+                                        <a href="/login"class="flex items-center ml-3 text-sm font-medium border-none text-gray-300"
+                                        title="Add to favourites">
+                                            <i class="fa-solid fa-heart text-xl mr-2"></i>
+
+                                        </a>
+                                        <% } %>
+
             
                                 <p class="font-semibold mr-1"><i class="fas fa-star text-l text-yellow-300"></i><%=neighborhood.avgRating.toFixed(1)%></p>
         
@@ -109,3 +116,4 @@
                 <% } %>
                     <% } %>
     </div>
+    <script src="/javascripts/preventRef.js"></script>

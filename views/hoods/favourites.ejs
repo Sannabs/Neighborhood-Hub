@@ -51,7 +51,7 @@
                     </h5>
                     <div class="inline-flex">
                         <% if(currentUser) {%>
-                        <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST" class="ml-3">
+                        <form action="/neighborhoods/<%= neighborhood._id %>/favourites" method="POST" class="ml-3 favourite-form">
                                 <button
                                     class="flex items-center ml-3 text-sm font-medium border-none
                                            <%= neighborhood.favourites.includes(currentUser._id) ? 'text-red-600' : 'text-gray-300' %>"
@@ -89,3 +89,4 @@
         </div>
     <% } %>
 </div>
+<script src="/javascripts/preventRef.js"></script>

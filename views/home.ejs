@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/Gstyles/navbar.css">
+    <link rel="stylesheet" href="/Gstyles/style.css">
+    <link rel="stylesheet" href="/dist/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="body">
+    <nav class="navbar bg-white py-1 w-full shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto flex items-center justify-between">
+          <!-- Logo and title -->
+          <a href="/" class="flex items-center space-x-1 text-blue-800 text-xl">
+            <img src="/images/p-logo.jpg" alt="Testimonial 3" class="w-16 h-16 rounded-full object-cover">
+            <span class="title font-bold">Neighborhood Hub</span>
+          </a>
+      
+          <!-- Burger Menu Icon -->
+          <div class="md:hidden flex items-center">
+            <button id="burger" class="focus:outline-none">
+              <svg class="burger w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+            </button>
+          </div>
+      
+          <!-- Links -->
+          <div class="home-link hidden md:flex items-center space-x-6 font-semibold text-sm">
+            <a href="/" class="text-black hover:text-blue-500"><i class="fas fa-city mr-2"></i>Neighborhoods</a>
+            <a href="/neighborhoods/popular" class="text-black"><i class="fas fa-crown mr-2"></i>Popular</a>
+          
+            <% if(!currentUser) { %>
+              <a href="/login" class="text-black">Login</a>
+            <% } %>
+      
+          </div>
+        </div>
+        <!-- Collapsible Links for Mobile -->
+        <div id="mobile-menu" class="home-mobile-link hidden md:hidden flex flex-col space-y-2 mt-3 ml-3 font-semibold text-sm">
+          <a href="/" class="text-black"><i class="fas fa-city mr-2"></i>Neighborhoods</a>
+          <a href="/neighborhoods/popular" class="text-black"><i class="fas fa-crown mr-2"></i>Popular</a>
+        
+          <% if(!currentUser) { %>
+            <a href="/login" class="text-black">Login</a>
+          <% } %>
+      
+        </div>
+      </nav>
+      <section class="container h-full mt-10 mx-auto py-20 px-4 flex flex-col md:flex-row items-center justify-between">
+        <div class="w-full md:w-1/2 space-y-4">
+            <h4 class="text-sm text-orange-500 font-semibold uppercase">Explore Neighborhoods</h4>
+            <h1 class="text-4xl font-bold text-gray-800 leading-tight">
+                Discover the Best Places to Live with <span class="text-blue-600">Neighborhood Hub</span>
+            </h1>
+            <p class="text-gray-600 mt-2">
+                Find your ideal neighborhood, complete with details on safety, schools, businesses, and more. Whether you're moving to a new city or just curious about your current area, we’ve got you covered.
+            </p>
+            <a href="/neighborhoods" class="explorer mt-4 inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                <h3 class="w-full ml-2 mr-3 font-semibold text-center">Start Exploring &rarr;</h3>
+            </a>
+        </div>
+    
+        <div class="w-full md:w-1/2 flex justify-center mt-8 md:mt-0">
+            <img src="/images/home.png" alt="Neighborhood Illustration" class="max-w-full h-auto">
+        </div>
+    </section>
+    
+      <section class="container h-full mt-16 mx-auto py-20 px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-12">What Our Users Say</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-lg">
+              <img src="https://www.cloudways.com/wp-content/uploads/2020/01/testimonial-edward.png" alt="Testimonial 1" class="w-16 h-16 rounded-full object-cover mb-5 shadow-md">
+              <p class="text-lg italic text-gray-600 mb-4">“I found the perfect home in a safe community that fits my family's needs!”</p>
+              <p class="text-gray-800 font-semibold">— John D.</p>
+          </div>
+          
+          <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-lg">
+              <img src="https://cinimage.org/wp-content/uploads/2021/10/Testimonial-Videos-1.png" alt="Testimonial 2" class="w-16 h-16 rounded-full object-cover mb-5 shadow-md">
+              <p class="text-lg italic text-gray-600 mb-4">“The Hub made our move to the area so much easier!”</p>
+              <p class="text-gray-800 font-semibold">— Mike S.</p>
+          </div>
+          
+          <div class="flex flex-col items-center text-center p-6 bg-white rounded-lg shadow-lg">
+              <img src="https://cdn-clibi.nitrocdn.com/OmAxDmvnEDrIbyCCcgEheUGaGtzJEYJA/assets/images/optimized/rev-b28d78a/wpstackable.com/wp-content/uploads/2022/03/leilani-angel-K84vnnzxmTQ-unsplash-scaled.jpg" alt="Testimonial 3" class="w-16 h-16 rounded-full object-cover mb-5 shadow-md">
+              <p class="text-lg italic text-gray-600 mb-4">“This is truly the heartbeat of our community! It allowed me to discover the safest place in The Gambia.”</p>
+              <p class="text-gray-800 font-semibold">— Abdou B.</p>
+          </div>
+      </div>
+  </section>
+    <script src="/javascripts/nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+</body>
+</html>

@@ -28,6 +28,7 @@ const app = express()
 const neighborhoodRoutes = require('./routes/Neighborhood')
 const reviewRoutes = require('./routes/Review')
 const userRoutes = require('./routes/User');
+const renderRoutes = require('./routes/renderRoute')
 const catchAsync = require('./utils/catchAsync');
 
 
@@ -87,35 +88,12 @@ app.use((req, res, next) => {
 
 app.use(storeReturnTo)  //REMOVE ME
 
-// HOME PAGE
-app.get('/', (req, res) => {
-    res.send("HOME PAGE!")
-})
-
-app.get('/search', catchAsync(async (req, res) => {
-    const query = req.query.q;
-    if (!query) {
-        return res.json([]);
-    }
-    try {
-        const neighborhoods = await Neighborhood.find({
-            $or: [
-                { location: { $regex: query, $options: 'i' } },
-                { title: { $regex: query, $options: 'i' } }
-            ]
-        }).select('_id title location').limit(10);
-        res.json(neighborhoods);
-    } catch (e) {
-        res.status(500).send('SERVER ERROR');
-        console.error(e)
-    }
-}));
 
 // MY ROUTES PREFIX
 app.use('/neighborhoods', neighborhoodRoutes)
 app.use('/neighborhoods/:id/reviews', reviewRoutes)
 app.use('/', userRoutes)
-
+app.use('/', renderRoutes)
 
 // For my middlewares
 app.all('*', (req, res, next) => {

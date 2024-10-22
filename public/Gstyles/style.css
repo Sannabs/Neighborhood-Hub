@@ -10,6 +10,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+.body {
+  /* background: #edede9; */
+}
 
 main {
     flex: 1;
@@ -19,11 +22,6 @@ main {
     width: 300px;
 }
 
-.show-on-hover {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
 
 .uniform-card:hover .show-on-hover {
     opacity: 1;
@@ -57,8 +55,27 @@ main {
     align-items: center;
 }
 
+
+
+@keyframes colorChange {
+  0% {
+      color: #00b4d8;
+  }
+  25% {
+      color: #0096c7;
+  }
+  50% {
+      color: #0077b6;
+  }
+  75% {
+      color: #023e8a;
+  }
+  100% {
+      color: #03045e;
+  }
+}
+
 .wrapper {
-    /* background-color: pink; */
     height: 300px;
     display: flex;
     align-items: center;
@@ -70,17 +87,117 @@ main {
 }
 
 .page-title h1 {
-    /* font-size: 50px; */
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     line-height: 1.1em;
     letter-spacing: -0.045em;
     font-family: 'Noto Sans', sans-serif;
     font-variation-settings: 'wght' 900;
+    animation: colorChange 2s infinite alternate;
 }
+
+.footer-title {
+  margin-bottom: 30px;
+  line-height: 1.1em;
+  letter-spacing: -0.045em;
+  font-family: 'Noto Sans', sans-serif;
+  font-variation-settings: 'wght' 900 !important;
+  animation: colorChange 2s infinite alternate;
+
+}
+
+.login-title {
+  margin-bottom: 30px;
+  line-height: 1.1em;
+  letter-spacing: -0.045em;
+  font-family: 'Noto Sans', sans-serif;
+  font-variation-settings: 'wght' 900 !important;
+  animation: colorChange 2s infinite alternate;
+
+}
+
+.live-map-text {
+  margin-bottom: 30px;
+  line-height: 1.1em;
+  letter-spacing: -0.045em;
+  font-family: 'Noto Sans', sans-serif;
+  font-variation-settings: 'wght' 900 !important;
+  animation: colorChange 2s infinite alternate;
+
+}
+
+@keyframes colorChanger {
+  0% {
+      color: #ff6f61; 
+  }
+  25% {
+      color: #ff9f1c; 
+  }
+  50% {
+      color: #2ec4b6; 
+  }
+  75% {
+      color: #3a86ff; 
+  }
+  100% {
+      color: #8338ec; 
+  }
+}
+
+
+.live-map-text-btn {
+  margin-bottom: 30px;
+  line-height: 1.1em;
+  letter-spacing: -0.045em;
+  font-family: 'Noto Sans', sans-serif;
+  font-variation-settings: 'wght' 900 !important;
+  animation: colorChanger 2s infinite;
+
+}
+
 
 .page-title div {
     color: #7d7c83;
-    line-height: 1.7em;
+    /* line-height: 1.7em; */
     font-size: 20px;
     display: block;
+}
+
+.show-map-container {
+  /* position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+.show-map-button {
+  background-color: #222; 
+  color: #fff;
+  padding: 11px 15px;
+  font-size: 15px;
+  border: none;
+  border-radius: 33px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.05s;;
+}
+
+.show-map-button:hover {
+  transform: scale(1.05) !important;
+}
+
+.show-map-button fa-map{
+  color: #fff;
+}
+
+.explorer{
+  transition: transform 0.3s ease;
+}
+.explorer:hover {
+
+  transform: scale(1.02);
 }

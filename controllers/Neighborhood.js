@@ -141,17 +141,27 @@ module.exports.deleteNeighborhood = async (req, res) => {
     res.redirect(`/neighborhoods`)
 }
 
+
 module.exports.Favourites = async (req, res) => {
-    const { id } = req.params
-    const userId = req.user._id
-    const neighborhood = await Neighborhood.findById(id)
+    const { id } = req.params;
+    const userId = req.user._id;
+    const neighborhood = await Neighborhood.findById(id);
+
+    let isFavourited;
+
     if (neighborhood.favourites.includes(userId)) {
-        neighborhood.favourites.pull(userId)
-        req.flash('success', `${neighborhood.location} Has been removed from your favourites`)
+        neighborhood.favourites.pull(userId);
+        isFavourited = false;
     } else {
-        neighborhood.favourites.push(userId)
-        req.flash('success', `${neighborhood.location} Has been added to your favourites`)
+        neighborhood.favourites.push(userId);
+        isFavourited = true;
     }
+
     await neighborhood.save();
-    res.redirect('/neighborhoods')
-}
+
+    if (req.xhr) {
+        return res.json({ isFavourited });
+    }
+
+    res.redirect('/neighborhoods');
+};
