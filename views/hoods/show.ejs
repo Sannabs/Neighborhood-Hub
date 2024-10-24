@@ -11,7 +11,7 @@
                 <% neighborhood.images.forEach((img, i) => { %>
                     <!-- Item -->
                     <div class="hidden w-full md:w-1/2 md:mb-0 duration-700 ease-in-out" data-carousel-item>
-                        <img src="<%= img.url %>" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        <img crossorigin="anonymous" src="<%= img.url %>" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                     </div>
                 <% }) %>
             </div>
@@ -180,7 +180,7 @@
                     "<%= review.body.charAt(0).toUpperCase() + review.body.slice(1) %>"
                 </blockquote>
                 <figcaption class="flex items-center mt- space-x-3 rtl:space-x-reverse">
-                    <img class="w-8 h-8 rounded-full object-cover" src="/images/defaultAvat.webp" alt="profile picture">
+                    <img crossorigin="anonymous" class="w-8 h-8 rounded-full object-cover" src="/images/defaultAvat.webp" alt="profile picture">
                     <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
                         <cite class="pe-3 font-medium text-gray-900 dark:text-white"><%= review.author.username.charAt(0).toUpperCase() + review.author.username.slice(1) %></cite>
                         <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400"><time class="review-date" data-date="<%= review.createdAt.toISOString() %>"></time></cite>

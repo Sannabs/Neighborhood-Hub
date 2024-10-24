@@ -22,6 +22,8 @@ const passport = require('passport');
 const session = require('express-session');
 // for temporary error messages and  success messages
 const flash = require('connect-flash');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize')
 const app = express()
 
 // IMPORTED ROUTES
@@ -49,6 +51,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(mongoSanitize())
 
 
 
@@ -69,6 +72,64 @@ const sessionConfig = {
 
 app.use(session(sessionConfig))
 app.use(flash())
+app.use(helmet())
+
+
+const scriptSrcUrls = [
+    "https://cdn.jsdelivr.net/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://maps.googleapis.com/", // Google Maps API
+    "https://maps.gstatic.com/",    // Google Maps imagery
+    "https://kit.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+];
+
+const styleSrcUrls = [
+    "https://cdn.jsdelivr.net/",
+    "https://stackpath.bootstrapcdn.com/",
+    "https://fonts.googleapis.com/",
+    "https://use.fontawesome.com/",
+];
+
+const connectSrcUrls = [
+    "https://maps.googleapis.com/", // Google Maps API
+    "https://maps.gstatic.com/",    // Google Maps imagery
+];
+
+const fontSrcUrls = [
+    "https://fonts.googleapis.com/",
+    "https://fonts.gstatic.com/",
+];
+
+const imgSrcUrls = [
+    "'self'",
+    "blob:",
+    "data:",
+    "https://res.cloudinary.com/dg4dcyvol/", // Your Cloudinary account
+    "https://media.istockphoto.com/",
+    "https://images.pexels.com/",
+    "https://cdn-clibi.nitrocdn.com",  // Additional image source
+    "https://maps.gstatic.com/",       // Google Maps tiles and imagery
+    "https://maps.googleapis.com/",    // Added Google Maps imagery source
+    "http://maps.google.com/"
+];
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'self'", "'unsafe-inline'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: ["'none'"],
+            imgSrc: ["'self'", "blob:", "data:", ...imgSrcUrls], // Google Maps imagery is already included
+            fontSrc: ["'self'", "data:", ...fontSrcUrls],
+        },
+    })
+);
+
+
 
 // AUTHENTICATION WITH PASSPORT
 app.use(passport.initialize())
