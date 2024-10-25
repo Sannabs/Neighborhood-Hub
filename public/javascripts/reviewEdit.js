@@ -16,3 +16,15 @@ function showEditForm(reviewId, body, rating) {
         input.checked = input.value == rating;  // Ensure the right rating is checked
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const reviewId = this.dataset.reviewId;
+            const body = this.dataset.body;
+            const rating = this.dataset.rating;
+            showEditForm(reviewId, body, rating);
+        });
+    });
+});
+

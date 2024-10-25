@@ -18,7 +18,6 @@ module.exports.createReview = async (req, res) => {
 
 
 module.exports.updateReview = async (req, res) => {
-    console.log(req.body)
     const { id, reviewId } = req.params;
     const { rating, body } = req.body.review; 
 

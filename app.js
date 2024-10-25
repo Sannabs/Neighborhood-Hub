@@ -33,8 +33,11 @@ const userRoutes = require('./routes/User');
 const renderRoutes = require('./routes/renderRoute')
 const catchAsync = require('./utils/catchAsync');
 
+// const dbUrl = 'mongodb://127.0.0.1:27017/Neigbor'
+const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/Neigbor'
+const mongoStore = require('connect-mongo')
 
-mongoose.connect('mongodb://127.0.0.1:27017/Neigbor')
+mongoose.connect(dbUrl)
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -54,9 +57,22 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(mongoSanitize())
 
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!'
+const store = mongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret,
+    }
+})
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
 
 // cookie set up
 const sessionConfig = {
+    store,
     name: 'session',
     secret: "thisisasecret",
     resave: false,
@@ -89,16 +105,22 @@ const styleSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+
 ];
 
 const connectSrcUrls = [
     "https://maps.googleapis.com/", // Google Maps API
     "https://maps.gstatic.com/",    // Google Maps imagery
+    
 ];
 
 const fontSrcUrls = [
     "https://fonts.googleapis.com/",
     "https://fonts.gstatic.com/",
+    "https://use.fontawesome.com/",
+    "https://cdnjs.cloudflare.com/",
+
 ];
 
 const imgSrcUrls = [
